@@ -33,7 +33,7 @@ fetch('posts.json')
   });
 
 // Load sidebar.html into #sidebar
-fetch('sidebar.html')
+fetch('../sidebar.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById('sidebar').innerHTML = html;

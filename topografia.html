@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LvlUpCamp - Nivelamento Trigonométrico</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <nav class="col-md-3 col-lg-2 d-md-block sidebar p-4" id="sidebar"></nav>
+
+      <!-- Conteúdo principal -->
+      <main class="col-md-9 col-lg-10 p-4 bg-white">
+        <h2 class="mb-4">Nivelamento Trigonométrico</h2>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" id="nivelamentoTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="simples-tab" data-bs-toggle="tab" data-bs-target="#simples" type="button" role="tab">Nivelamento Simples</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tabela-tab" data-bs-toggle="tab" data-bs-target="#tabela" type="button" role="tab">Nivelamento c/ Tabela</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="reciprocas-tab" data-bs-toggle="tab" data-bs-target="#reciprocas" type="button" role="tab">Zenitais Recíprocas</button>
+          </li>
+        </ul>
+
+        <!-- Conteúdo Tabs -->
+        <div class="tab-content mt-3" id="nivelamentoTabsContent">
+          
+          <!-- Aba 1: Nivelamento Simples -->
+          <div class="tab-pane fade show active" id="simples" role="tabpanel">
+              <!-- Cota da estação -->
+              <label for="cotaEstacao" class="form-label">Cota do ponto de estação (CA)</label>
+              <input type="number" id="cotaEstacao" class="form-control mb-3" step="0.001" placeholder="Ex: 250.000">
+      
+              <!-- Alturas -->
+              <label for="alturaEstacao" class="form-label">Altura da Estação (hi)</label>
+              <input type="number" id="alturaEstacao" class="form-control mb-2" step="0.001">
+      
+              <label for="alturaAlvo" class="form-label">Altura do Alvo (ha)</label>
+              <input type="number" id="alturaAlvo" class="form-control mb-2" step="0.001">
+      
+              <!-- Formato do ângulo -->
+              <label for="formatoAngulo" class="form-label mt-3">Formato do Ângulo Zenital</label>
+              <select class="form-select mb-3" id="formatoAngulo" onchange="trocarFormato()">
+                <option value="decimal">Grau Decimal</option>
+                <option value="gms">Graus, Minutos, Segundos</option>
+              </select>
+      
+              <!-- Ângulo em grau decimal -->
+              <div id="inputDecimal">
+                <label for="anguloZenitalDecimal" class="form-label">Ângulo Zenital (Z) em graus</label>
+                <input type="number" id="anguloZenitalDecimal" class="form-control" placeholder="Ex: 82.0652" step="0.0001">
+              </div>
+      
+              <!-- Ângulo em GMS -->
+              <div id="inputGMS" style="display: none;">
+                <label class="form-label">Ângulo Zenital (Z) em GMS</label>
+                <div class="row g-1">
+                  <div class="col">
+                    <input type="number" id="graus" class="form-control" placeholder="Graus" />
+                  </div>
+                  <div class="col">
+                    <input type="number" id="minutos" class="form-control" placeholder="Minutos" />
+                  </div>
+                  <div class="col">
+                    <input type="number" id="segundos" class="form-control" placeholder="Segundos" step="0.01" />
+                  </div>
+                </div>
+              </div>
+      
+              <!-- Distância inclinada -->
+              <label for="distInclinada" class="form-label mt-3">Distância Inclinada (D') em metros</label>
+              <input type="number" id="distInclinada" class="form-control mb-3" step="0.001">
+      
+              <!-- Correções -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="corrRefra">
+                <label class="form-check-label" for="corrRefra">Aplicar correção da refração</label>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="corrEsfer">
+                <label class="form-check-label" for="corrEsfer">Aplicar correção da esfericidade</label>
+              </div>
+      
+
+              <!-- Erros Instrumentais -->
+              <div class="row g-2 mt-4">
+                <div class="col-md-3">
+                  <label for="erroAngulo" class="form-label">Erro do Ângulo (″)</label>
+                  <input type="number" id="erroAngulo" class="form-control" step="0.1" placeholder="Ex: 3">
+                </div>
+                <div class="col-md-3">
+                  <label for="erroDistancia" class="form-label">Erro base da distância (mm)</label>
+                  <input type="number" id="erroDistancia" class="form-control" step="0.1" placeholder="Ex: 1.5">
+                </div>
+                <div class="col-md-3">
+                  <label for="ppm" class="form-label">PPM da distância</label>
+                  <input type="number" id="ppm" class="form-control" step="0.1" placeholder="Ex: 2">
+                </div>
+                <div class="col-md-3">
+                  <label for="erroAlturas" class="form-label">Erro em hi/ha (m)</label>
+                  <input type="number" id="erroAlturas" class="form-control" step="0.001" placeholder="Ex: 0.005">
+                </div>
+              </div>
+              <div class="form-check mt-2">
+                <input class="form-check-input" type="checkbox" id="incluirIncerteza">
+                <label class="form-check-label" for="incluirIncerteza">
+                  Calcular incerteza da cota do ponto visado
+                </label>
+              </div>
+
+              <button class="btn btn-primary" onclick="calcularDesnivel()">Calcular</button>
+      
+              <!-- Resultados -->
+              <div class="mt-4">
+                <h5>Resultados:</h5>
+                <p id="resultado">Preencha os campos e clique em calcular.</p>
+                <p id="formula" class="mt-3 text-secondary fst-italic"></p>
+                <ul id="detalhes" class="list-group mt-3"></ul>
+              </div>
+          </div>
+
+          <!-- Aba 2: Nivelamento com Tabela -->
+<div class="tab-pane fade" id="tabela" role="tabpanel">
+
+  <div class="table-responsive" style="padding-bottom: 200px">
+    <table class="table table-bordered align-middle text-center" id="tabelaPontos">
+      <thead class="table-light">
+        <tr>
+          <th>Ponto</th>
+          <th>Cota</th>
+          <th>Ponto Visado</th>
+          <th>Alt. Intrumento (m)</th>
+          <th>Alt. Alvo (m)</th>
+          <th>Dist. Inclinada</th>
+          <th>Ângulo <small>(com tipo)</small></th>
+          <th>Δh</th>
+          <th>Cota <small>(Ponto Visado)</small></th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <!-- Linhas geradas dinamicamente -->
+      </tbody>
+    </table>
+  </div>
+
+  <button class="btn btn-secondary mb-3" onclick="adicionarPonto()">+ Adicionar Ponto</button>
+  <button class="btn btn-warning mb-3" onclick="visarNovoPonto()">Visar Novo Ponto</button>
+  <button class="btn btn-primary mb-3" onclick="calcularTabela()">Calcular Tabela</button>
+
+</div>
+
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/niv_trig_simples.js"></script>
+  <script src="js/niv_trig_tabela.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
