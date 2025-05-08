@@ -32,8 +32,9 @@ fetch('posts.json')
     console.error("Failed to load posts.json:", err);
   });
 
-// Load sidebar.html into #sidebar
-fetch('sidebar.html')
+const sidebarPath = window.location.pathname.includes('posts/') ? '../sidebar.html' : 'sidebar.html';
+
+fetch(sidebarPath)
   .then(res => res.text())
   .then(html => {
     document.getElementById('sidebar').innerHTML = html;
