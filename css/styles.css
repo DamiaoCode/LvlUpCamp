@@ -1,0 +1,22 @@
+.sidebar {
+  min-height: 100vh;
+  background-color: #343a40;
+  color: white;
+}
+.sidebar a {
+  color: #adb5bd;
+  text-decoration: none;
+}
+.sidebar a:hover {
+  color: white;
+}
+.post-card img {
+  width: 100%;
+  height: auto;
+}
+.post-card {
+  transition: transform 0.2s ease;
+}
+.post-card:hover {
+  transform: scale(1.02);
+}
