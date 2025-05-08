@@ -49,6 +49,26 @@ fetch(relativeBase + 'sidebar.html')
     document.querySelectorAll('#sidebar a[data-href]').forEach(link => {
       link.setAttribute('href', base + link.getAttribute('data-href'));
     });
+
+    // Criar botão de toggle visível em mobile
+    const toggleBtn = document.createElement('nav');
+    toggleBtn.className = 'd-md-none bg-dark text-white p-2';
+    toggleBtn.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="fw-bold">LvlUpCamp</span>
+        <button class="btn btn-outline-light btn-sm" id="toggleSidebar">☰</button>
+      </div>
+    `;
+
+    // Inserir antes da <div class="container-fluid">
+    const container = document.querySelector('.container-fluid');
+    container.parentElement.insertBefore(toggleBtn, container);
+
+    // Toggle de visibilidade da sidebar em mobile
+    document.getElementById('toggleSidebar').addEventListener('click', () => {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('mobile-show');
+    });
   })
   .catch(err => {
     console.error("Failed to load sidebar:", err);

@@ -27,3 +27,23 @@
   max-height: 200px;
   overflow-y: auto;
 }
+
+/* Sidebar mobile (oculta por padrão em ecrãs pequenos) */
+@media (max-width: 768px) {
+  #sidebar {
+    display: none;
+  }
+
+  #sidebar.mobile-show {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 75%;
+    height: 100%;
+    background-color: #343a40;
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+}
