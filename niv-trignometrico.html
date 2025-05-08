@@ -130,35 +130,72 @@
           </div>
 
           <!-- Aba 2: Nivelamento com Tabela -->
-<div class="tab-pane fade" id="tabela" role="tabpanel">
+          <div class="tab-pane fade" id="tabela" role="tabpanel">
 
-  <div class="table-responsive" style="padding-bottom: 200px">
-    <table class="table table-bordered align-middle text-center" id="tabelaPontos">
-      <thead class="table-light">
-        <tr>
-          <th>Ponto</th>
-          <th>Cota</th>
-          <th>Ponto Visado</th>
-          <th>Alt. Intrumento (m)</th>
-          <th>Alt. Alvo (m)</th>
-          <th>Dist. Inclinada</th>
-          <th>Ângulo <small>(com tipo)</small></th>
-          <th>Δh</th>
-          <th>Cota <small>(Ponto Visado)</small></th>
-        </tr>
-      </thead>
-      
-      <tbody>
-        <!-- Linhas geradas dinamicamente -->
-      </tbody>
-    </table>
-  </div>
+            <div class="table-responsive" style="padding-bottom: 200px">
+              <table class="table table-bordered align-middle text-center" id="tabelaPontos">
+                <thead class="table-light">
+                  <tr>
+                    <th>Ponto</th>
+                    <th>Cota</th>
+                    <th>Ponto Visado</th>
+                    <th>Alt. Intrumento (m)</th>
+                    <th>Alt. Alvo (m)</th>
+                    <th>Dist. Inclinada</th>
+                    <th>Ângulo <small>(com tipo)</small></th>
+                    <th>Δh</th>
+                    <th>Cota <small>(Ponto Visado)</small></th>
+                  </tr>
+                </thead>
+                
+                <tbody>
+                  <!-- Linhas geradas dinamicamente -->
+                </tbody>
+              </table>
+            </div>
 
-  <button class="btn btn-secondary mb-3" onclick="adicionarPonto()">+ Adicionar Ponto</button>
-  <button class="btn btn-warning mb-3" onclick="visarNovoPonto()">Visar Novo Ponto</button>
-  <button class="btn btn-primary mb-3" onclick="calcularTabela()">Calcular Tabela</button>
+            <button class="btn btn-secondary mb-3" onclick="adicionarPonto()">+ Adicionar Ponto</button>
+            <button class="btn btn-warning mb-3" onclick="visarNovoPonto()">Visar Novo Ponto</button>
+            <button class="btn btn-primary mb-3" onclick="calcularTabela()">Calcular Tabela</button>
 
-</div>
+          </div>
+          <!-- Aba 3: Nivelamento - Zenitais Recíprocas -->
+          <div class="tab-pane fade" id="reciprocas" role="tabpanel">
+
+
+            <div class="mb-3 mt-3">
+              <label for="formatoAnguloReciproco" class="form-label">Formato do Ângulo Zenital</label>
+              <select class="form-select" id="formatoAnguloReciproco" onchange="trocarFormatoReciproco()">
+                <option value="graus">Graus Decimais</option>
+                <option value="grados">Grados</option>
+                <option value="radianos">Radianos</option>
+                <option value="gms">Graus, Min, Seg</option>
+              </select>
+            </div>
+            
+            <!-- Coluna A -> B -->
+            <h5 class="mt-3">Visada A → B</h5>
+            <div class="row g-2">
+              <div class="col-md-3"><input class="form-control" id="hiA" placeholder="Alt. Instrumento (m) - A"></div>
+              <div class="col-md-3"><input class="form-control" id="haB" placeholder="Alt. Alvo (m) - B"></div>
+              <div class="col-md-3"><input class="form-control" id="ZAB" placeholder="Ângulo Z AB (graus)"></div>
+              <div class="col-md-3"><input class="form-control" id="DAB" placeholder="Distância AB (m)"></div>
+            </div>
+
+            <!-- Coluna B -> A -->
+            <h5 class="mt-4">Visada B → A</h5>
+            <div class="row g-2">
+              <div class="col-md-3"><input class="form-control" id="hiB" placeholder="Alt. Instrumento (m) - B"></div>
+              <div class="col-md-3"><input class="form-control" id="haA" placeholder="Alt. Alvo (m) - A"></div>
+              <div class="col-md-3"><input class="form-control" id="ZBA" placeholder="Ângulo Z BA (graus)"></div>
+              <div class="col-md-3"><input class="form-control" id="DBA" placeholder="Distância BA (m)"></div>
+            </div>
+
+            <button class="btn btn-primary mt-3" onclick="calcularReciproco()">Calcular</button>
+            <p id="resultadoReciproco" class="mt-3 fw-bold"></p>
+          </div>
+
+          </div>
 
 
       </main>
@@ -169,6 +206,7 @@
   <script src="js/main.js"></script>
   <script src="js/niv_trig_simples.js"></script>
   <script src="js/niv_trig_tabela.js"></script>
+  <script src="js/niv_trig_reciprocas.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
