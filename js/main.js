@@ -1,14 +1,16 @@
-// Determinar o path base corretamente para GitHub Pages
-const pathParts = window.location.pathname.split('/');
-const isInPosts = pathParts.includes('posts');
-const base = pathParts.includes('LvlUpCamp') ? (isInPosts ? '../' : '') : (isInPosts ? '../' : '');
+// Detectar caminho base para GitHub Pages
+const GHPagesBase = '/LvlUpCamp/';
+const currentPath = window.location.pathname;
+const isInPosts = currentPath.includes('/posts/');
+const base = currentPath.startsWith(GHPagesBase) ? GHPagesBase : '';
+const relativeBase = isInPosts ? '../' : '';
 
 // Carregar os posts
-fetch(base + 'posts.json')
+fetch(relativeBase + 'posts.json')
   .then(res => res.json())
   .then(posts => {
     const container = document.getElementById('posts');
-    if (!container) return; // segurança
+    if (!container) return;
     posts.forEach(post => {
       const card = document.createElement('div');
       card.className = 'col-md-6 col-lg-4 mb-4';
@@ -25,7 +27,7 @@ fetch(base + 'posts.json')
             <h5 class="card-title">${post.title}</h5>
             <p class="card-text">${post.excerpt}</p>
             ${post.date ? `<p class="text-muted small">${post.date}</p>` : ''}
-            <a href="${base + post.link}" class="btn btn-sm btn-outline-primary mt-2">Ler mais →</a>
+            <a href="${relativeBase + post.link}" class="btn btn-sm btn-outline-primary mt-2">Ler mais →</a>
           </div>
         </div>
       `;
@@ -38,12 +40,12 @@ fetch(base + 'posts.json')
   });
 
 // Carregar a sidebar
-fetch(base + 'sidebar.html')
+fetch(relativeBase + 'sidebar.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById('sidebar').innerHTML = html;
 
-    // Ajustar os links da sidebar depois de inserida
+    // Corrigir links da sidebar para funcionarem no GitHub Pages
     document.querySelectorAll('#sidebar a[data-href]').forEach(link => {
       link.setAttribute('href', base + link.getAttribute('data-href'));
     });
