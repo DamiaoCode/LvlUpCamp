@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LvlUpCamp</title>
+  <link rel="icon" href="Logo.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="Logo.png">
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+
+  <!-- Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+  function drawTable() {
+    var queryString = encodeURIComponent('SELECT B, D, E, F WHERE B IS NOT NULL');
+    var query = new google.visualization.Query(
+      'https://docs.google.com/spreadsheets/d/1uO1LL0JqlgtDqvWukdlQs9VVYug01cHl182crT7PcWY/gviz/tq?sheet=Folha%20do%20Dia&headers=1&tq=' + queryString
+    );
+    query.send(function(response) {
+      var data = response.getDataTable();
+      var view = new google.visualization.DataView(data);
+      view.setColumns([
+        {
+          calc: function (dt, row) {
+            return dt.getValue(row, 0); // B (date)
+          },
+          type: 'date',
+          label: data.getColumnLabel(0),
+          p: { className: 'col-b' }
+        },
+        {
+          calc: function (dt, row) {
+            return dt.getValue(row, 1); // D (text)
+          },
+          type: 'string',
+          label: data.getColumnLabel(1),
+          p: { className: 'col-d' }
+        },
+        {
+          calc: function (dt, row) {
+            return dt.getValue(row, 2); // E (number)
+          },
+          type: 'number',
+          label: data.getColumnLabel(2),
+          p: { className: 'col-e' }
+        },
+        {
+          calc: function (dt, row) {
+            return dt.getValue(row, 3); // F (number)
+          },
+          type: 'number',
+          label: data.getColumnLabel(3),
+          p: { className: 'col-f' }
+        }
+      ]);
+
+      // Optional: Format date to dd/MM/yyyy
+      var dateFormatter = new google.visualization.DateFormat({ pattern: 'dd/MM/yyyy' });
+      dateFormatter.format(view, 0); // Format column 0 (B)
+
+      var table = new google.visualization.Table(document.getElementById('table_div'));
+      table.draw(view, {
+        showRowNumber: true,
+        width: '100%',
+        height: 'auto'
+      });
+    });
+  }
+
+  google.charts.load('current', { 'packages': ['table'] });
+  google.charts.setOnLoadCallback(drawTable);
+</script>
+
+  <!-- Custom styles for column widths -->
+  <style>
+    .google-visualization-table-td.col-b {
+      width: 75px !important;
+      max-width: 100px !important;
+      white-space: nowrap;
+    }
+
+    .google-visualization-table-td.col-d {
+      width: 75px !important;
+      max-width: 100x !important;
+      white-space: nowrap;
+    }
+
+    .google-visualization-table-td.col-e {
+      width: 220px !important;
+      max-width: 220px !important;
+      white-space: nowrap;
+    }
+
+    .google-visualization-table-td.col-f {
+      width: 100px !important;
+      max-width: 100px !important;
+      white-space: nowrap;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <nav class="col-md-3 col-lg-2 d-md-block sidebar p-4" id="sidebar"></nav>
+
+      <!-- Main Content -->
+      <main class="col-md-9 col-lg-10 p-4 bg-light">
+        <h2 class="mb-4">Folha de Investimentos - FX</h2>
+
+        <!-- Table container -->
+        <div class="table-responsive p-3 bg-white rounded shadow">
+          <div id="table_div"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

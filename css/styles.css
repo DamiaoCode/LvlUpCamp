@@ -47,3 +47,22 @@
     padding: 1.5rem;
   }
 }
+
+
+.google-visualization-table-td.col-a {
+  width: 120px !important;
+  max-width: 120px !important;
+  white-space: nowrap;
+}
+
+.google-visualization-table-td.col-b {
+  width: 200px !important;
+  max-width: 200px !important;
+  white-space: nowrap;
+}
+
+.google-visualization-table-td.col-c {
+  width: 80px !important;
+  max-width: 80px !important;
+  white-space: nowrap;
+}
