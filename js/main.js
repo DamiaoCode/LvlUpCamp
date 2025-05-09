@@ -1,12 +1,11 @@
-// Detectar caminho base para GitHub Pages
+// Detectar caminho base dinâmico
 const GHPagesBase = '/LvlUpCamp/';
 const currentPath = window.location.pathname;
-const isInPosts = currentPath.includes('/posts/');
-const base = currentPath.startsWith(GHPagesBase) ? GHPagesBase : '';
-const relativeBase = isInPosts ? '../' : '';
+const isOnGitHubPages = currentPath.startsWith(GHPagesBase);
+const base = isOnGitHubPages ? GHPagesBase : '/';
 
 // Carregar os posts
-fetch(relativeBase + 'posts.json')
+fetch(base + 'posts.json')
   .then(res => res.json())
   .then(posts => {
     const container = document.getElementById('posts');
@@ -15,7 +14,12 @@ fetch(relativeBase + 'posts.json')
       const card = document.createElement('div');
       card.className = 'col-md-6 col-lg-4 mb-4';
 
-      const hasImage = post.image && (post.image.startsWith("http") || post.image.endsWith(".jpg") || post.image.endsWith(".png") || post.image.endsWith(".webp"));
+      const hasImage = post.image && (
+        post.image.startsWith("http") ||
+        post.image.endsWith(".jpg") ||
+        post.image.endsWith(".png") ||
+        post.image.endsWith(".webp")
+      );
 
       card.innerHTML = `
         <div class="card post-card h-100 flex-row">
@@ -27,7 +31,7 @@ fetch(relativeBase + 'posts.json')
             <h5 class="card-title">${post.title}</h5>
             <p class="card-text">${post.excerpt}</p>
             ${post.date ? `<p class="text-muted small">${post.date}</p>` : ''}
-            <a href="${relativeBase + post.link}" class="btn btn-sm btn-outline-primary mt-2">Ler mais →</a>
+            <a href="${base + post.link}" class="btn btn-sm btn-outline-primary mt-2">Ler mais →</a>
           </div>
         </div>
       `;
@@ -40,12 +44,12 @@ fetch(relativeBase + 'posts.json')
   });
 
 // Carregar a sidebar
-fetch(relativeBase + 'sidebar.html')
+fetch(base + 'sidebar.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById('sidebar').innerHTML = html;
 
-    // Corrigir links da sidebar para funcionarem no GitHub Pages
+    // Corrigir links da sidebar para funcionarem no GitHub Pages e local
     document.querySelectorAll('#sidebar a[data-href]').forEach(link => {
       link.setAttribute('href', base + link.getAttribute('data-href'));
     });
@@ -60,11 +64,9 @@ fetch(relativeBase + 'sidebar.html')
       </div>
     `;
 
-    // Inserir antes da <div class="container-fluid">
     const container = document.querySelector('.container-fluid');
     container.parentElement.insertBefore(toggleBtn, container);
 
-    // Toggle de visibilidade da sidebar em mobile
     document.getElementById('toggleSidebar').addEventListener('click', () => {
       const sidebar = document.getElementById('sidebar');
       sidebar.classList.toggle('mobile-show');
